@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    Movimientos
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12">
+            <h4>Cuenta: @Model.Cuenta.Titulo - Saldo: @Model.Cuenta.Saldo</h4>
+        </div>
+        <div class="col-6">
+            <div class="text-center">
+                Ingresos
+            </div>
+            <ul>
+                @foreach (var ingreso in Model.Ingresos)
+                {
+                    <li>@ingreso.Descripcion - S/ @ingreso.Monto </li>
+                }
+            </ul>
+        </div>
+        <div class="col-6">
+            <div class="text-center">
+                Gastos
+            </div>
+            <ul>
+                @foreach (var gasto in Model.Gastos)
+                {
+                    <li>@gasto.Descripcion - S/ @gasto.Monto </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" onclick="cerrarFormulario()">Cerrar</button>
+</div>

@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    Seleccionar amigo
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label>Amigos</label>
+        <select class="form-control" id="amigoId">
+            <option value="" disabled selected>Seleccionar</option>
+            @foreach (var amigo in Model)
+            {
+                <option value="@amigo.Id ">@amigo.Nombre</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" onclick="cerrarFormulario()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" onclick="verCuentas()">Ver cuentas</button>
+</div>
+
+
+<script>
+    function verCuentas() {
+        var id = $("#amigoId").val();
+        var url = "/movimiento/registrarATerceros?amigoId=" + id;
+        $.ajax(url).then(function (response) {
+            $("#movimientoModal .modal-content").html(response);
+        });
+    }
+
+</script>

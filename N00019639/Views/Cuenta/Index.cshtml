@@ -1,0 +1,101 @@
+﻿<div class="row">
+    <div class="col-6">
+        <h3>Saldo total: @ViewBag.SaldoTotal</h3>
+    </div>
+    <div class="col-6">
+        <button type="button" class="btn btn-info" onclick="mostrarFormulario(null, 'PROPIAS')">+ Transferencia entre mis cuentas</button>
+        <button type="button" class="btn btn-info" onclick="mostrarFormulario(null, 'TERCEROS')">+ Transferencia a terceros</button>
+    </div>
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cuenta</th>
+                    <th>Categoria</th>
+                    <th>Saldo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cuenta in Model) { 
+                <tr>
+                    <td>@cuenta.Titulo </td>
+                    <td>@cuenta.Categoria </td>
+                    <td>S/ @cuenta.Saldo</td>
+                    <td>
+                        <button type="button" class="btn btn-info" onclick="mostrarMovimientos(@cuenta.Id)">MOVIMIENTOS</button>
+                        <button type="button" class="btn btn-success" onclick="mostrarFormulario(@cuenta.Id, 'INGRESO')">+</button>
+                        <button type="button" class="btn btn-danger" onclick="mostrarFormulario(@cuenta.Id, 'GASTO')">-</button>
+                    </td>
+                </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="movimientoModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="movimientoModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function mostrarFormulario(id, movimiento) {
+        if (movimiento == "INGRESO") {
+            mostrarFormularioIngreso(id);
+        } else if (movimiento == "GASTO") {
+            mostrarFormularioGasto(id);
+        } else if (movimiento == "PROPIAS") {
+            mostrarFormularioTransferenciaEntreMisCuentas();
+        } else if (movimiento == "TERCEROS") {
+            mostrarFormularioAmigos();
+        }
+
+        $("#movimientoModal").modal("show");
+    }
+
+    function cerrarFormulario() {
+        $("#movimientoModal").modal("hide");
+        window.location.reload();
+    }
+
+    function mostrarFormularioIngreso(id) {
+        var url = "/movimiento/registrarIngreso?cuentaId=" + id;
+        $.ajax(url).then(function (response) {
+            $("#movimientoModal .modal-content").html(response);
+        });
+    }
+
+    function mostrarFormularioGasto(id) {
+        var url = "/movimiento/registrarGasto?cuentaId=" + id;
+        $.ajax(url).then(function (response) {
+            $("#movimientoModal .modal-content").html(response);
+        });
+    }
+
+    function mostrarFormularioTransferenciaEntreMisCuentas() {
+        var url = "/movimiento/RegistrarEntreMisCuentas";
+        $.ajax(url).then(function (response) {
+            $("#movimientoModal .modal-content").html(response);
+        });
+    }
+
+    function mostrarFormularioAmigos() {
+        var url = "/movimiento/verAmigos";
+        $.ajax(url).then(function (response) {
+            $("#movimientoModal .modal-content").html(response);
+        });
+    }
+
+    function mostrarMovimientos(id) {
+        var url = "/movimiento/VerMovimientos?cuentaId=" + id;
+        $.ajax(url).then(function (response) {
+            $("#movimientoModal .modal-content").html(response);
+            $("#movimientoModal").modal("show");
+        });
+    }
+</script>

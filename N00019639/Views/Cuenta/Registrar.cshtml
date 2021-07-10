@@ -1,0 +1,32 @@
+﻿<h1 class="text-center">Registrar cuenta</h1>
+
+<div class="row">
+    <div class="col-6">
+        <form action="/Cuenta/Registrar" method="post">
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" name="Titulo" class="form-control" autocomplete="off" />
+                @if (Html.ValidationMessage("Titulo") != null)
+                {
+                    <span class="text-danger">@Html.ValidationMessage("Titulo")</span>
+                }
+            </div>
+            <div class="form-group">
+                <label>Categoria</label>
+                <select name="Categoria" class="form-control" required>
+                    <option value="PROPIO">Propio</option>
+                    <option value="CREDITO">Credito</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Balance</label>
+                <input type="number" name="Saldo" class="form-control" autocomplete="off" min="0" value="0"/>
+                @if (Html.ValidationMessage("Saldo") != null)
+                {
+                    <span class="text-danger">@Html.ValidationMessage("Saldo")</span>
+                }
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    Transferencia a terceros
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label>Cuenta origen</label>
+        <select class="form-control" id="CuentaOrigenId" name="CuentaOrigenId">
+            <option value="" selected disabled>Seleccionar</option>
+            @foreach (var cuenta in Model)
+            {
+                <option value="@cuenta.Id ">@cuenta.Titulo (S/ @cuenta.Saldo)</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Cuenta destino</label>
+        <select class="form-control" id="CuentaDestinoId" name="CuentaDestinoId">
+            <option value="" selected disabled>Seleccionar</option>
+            @foreach (var cuenta in ViewBag.CuentasAmigo)
+            {
+                <option value="@cuenta.Id ">@cuenta.Titulo</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Monto</label>
+        <input type="number" id="monto" class="form-control" required min="0" value="0" />
+    </div>
+    <span id="mensaje" class="text-danger"></span>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" onclick="cerrarFormulario()">Cancelar</button>
+    <button type="submit" class="btn btn-primary" onclick="registrar()">Guardar</button>
+</div>
+
+
+<script>
+    function registrar() {
+        var formData = new FormData();
+
+
+        var cuentaOrigenId = $("#CuentaOrigenId").val();
+        formData.append("CuentaOrigenId", cuentaOrigenId);
+
+        var cuentaDestinoId = $("#CuentaDestinoId").val();
+        formData.append("CuentaDestinoId", cuentaDestinoId);
+
+        var monto = $("#monto").val();
+        formData.append("Monto", monto);
+
+        var fecha = $("#fecha").val();
+        formData.append("Fecha", fecha);
+
+        formData.append("TipoMovimiento", 3);
+
+        $.ajax({
+            type: "POST",
+            url: "/Movimiento/Registrar",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (respuesta) {
+                cerrarFormulario();
+            },
+            error: function () {
+                $("#mensaje").text("Operación inválida");
+            }
+        })
+    }
+</script>
